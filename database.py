@@ -1,4 +1,5 @@
 import sqlite3
+import hashlib
 
 def db_execute(command, save=False):
 
@@ -23,27 +24,19 @@ def db_execute(command, save=False):
             return data
 
 
-
-
-        #    CODE TO CREATE THE DATAS
+        #    CODE TO CREATE THE DATABASE
 
 # from faker import Faker
 
 # fk = Faker(locale=['pt_BR'])
-conn = sqlite3.connect('data.db')
-cursor = conn.cursor()
+# conn = sqlite3.connect('data.db')
+# cursor = conn.cursor()
 
 # cursor.execute("""
 # CREATE TABLE if not exists names (
 #             id integer primary key autoincrement not null,
 #             name varchar not null
 #                );""")
-# cursor.execute("""
-# CREATE TABLE if not exists domain (
-#                id integer primary key autoincrement not null,
-#                domain varchar(200) not null
-# );
-# """)
 
 # for _ in range(100):
 #     f_name = fk.name()

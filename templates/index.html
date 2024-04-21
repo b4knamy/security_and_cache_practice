@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice</title>
+    <style>
+        h1 {
+            position: relative;
+            bottom: 30%;
+        }
+        body {
+            background-color: #5f9ea0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        div, form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        .row {
+            flex-direction: row;
+        }
+        .column {
+            flex-direction: column;
+        }
+        .container {
+            width: 100%;
+            gap: 300px;
+        }
+        input[type='text'] {
+            width: 25rem;
+            height: 1.5rem;
+            padding: 5px;
+        }
+        button, input[type='submit'] {
+            width: 5rem;
+            height: 1.5rem;
+            cursor: pointer;
+        }
+        #text {
+            position: absolute;
+            font-size: 20px;
+            top: 200px;
+        }
+        #helper {
+            position: absolute;
+            font-size: 20px;
+            bottom: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <div class="container row">
+        <div class="api-container column">
+            <span>Puxar dados da API - Não precisa colocar o dominio</span>
+            <input class="input" type="text" placeholder="Pós dominio: api/each/name/42 or api/all/name/4">
+            <button id="api">Get data</button>
+        </div>
+        <pre id="text">...</pre>
+    </div>
+   
+    
+
+    <script>
+        var input = document.querySelector('.input')
+        var text = document.getElementById('text')
+        document.getElementById('api').addEventListener('click', () => {
+            fetch('http://127.0.0.1:5000/' + input.value).then( (response) => response.json())
+            .then((data) => {
+
+                text.innerHTML = JSON.stringify(data, 3)
+            }).catch((error) => {
+                text.innerHTML = `Error: ${error} <br> <br> OBS: coloque o dominio atual no CORS_RESOURCES para ser reconhecido pelo CORS.`
+            })
+        })
+
+    </script>
+</body>
+</html>

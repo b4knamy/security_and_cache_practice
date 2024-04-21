@@ -1,28 +1,43 @@
-from flask import Flask, jsonify, session, request
-from flask_cors import CORS
+from flask import jsonify, session, render_template
+from core import app, cache
 from database import db_execute
-
-app = Flask(__name__)
-CORS(app=app, resources={'/api/*': {
-    'origins': 'http://127.0.0.1:5500', 'max_age': 12}})
+from random import choice
 
 
-@app.route('/api/name/<int:id>')
-def home(id):
-    session['username'] = 'heronosso'
-    session['password'] = '123'
-    if request.method == 'GET':
-        print('eoq')
-    return jsonify(session)
-    return jsonify(db_execute(f'select * from names where id={id}').fetchone())
 
-@app.route('/api/all')
-def another():
 
-    return jsonify(db_execute('SELECT * FROM names limit 2').fetchall())
+@app.route('/api/each/name/<int:id>')
+def each_name(id):
+    is_cooked = f'each_name_{id}'
+    if is_cooked in session:
+        print('is_cooked from each')
+        return jsonify(session[is_cooked])   
+    
+    data = db_execute(f'select * from names where id={id}').fetchone()
+    session[is_cooked] = data
+
+    return jsonify(data)
+
+@app.route('/api/all/name/<int:limit>')
+def all_name(limit):
+    is_cookie = f'all_name_{limit}'
+    if is_cookie in session:
+        return jsonify(session[is_cookie])
+
+    data = db_execute(f'SELECT * FROM names limit {limit}').fetchall()
+    session[is_cookie] = data
+    return jsonify(data)
+
+
+@app.route('/')
+@cache.cached(timeout=5)
+def index():
+    
+    app_titles = ['API TEST', 'TEST API', 'SMALL API TEST', 'BIG API TEST??', 'BAD API TEST', 'GOOD API TEST']
+    title = choice(app_titles) # Try reloading the page many times to see caching working
+    print(title)
+    return render_template('index.html', title=title)
 
 
 if __name__ == '__main__':
-    app.secret_key = 'eoq'
-    host = '0.0.0.0'
-    app.run(debug=True, host=host)
+    app.run(debug=True)
