@@ -1,5 +1,4 @@
 import sqlite3
-import hashlib
 
 def db_execute(command, save=False):
 

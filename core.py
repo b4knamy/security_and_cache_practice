@@ -1,9 +1,8 @@
-from flask import Flask, session
+from flask import Flask
 from datetime import timedelta
 from flask_cors import CORS
 from flask_caching import Cache
 from settings import CORS_RESOURCES, CACHE_CONFIG
-import hashlib
 
 
 app = Flask(__name__, template_folder='templates')
